@@ -11,4 +11,7 @@ def planner(protocol, base_url, path, param = None, data = None):
         quit()
 
     print(f"{response['message']}")
-    print(f"Planner ID: {response['plannerId']}")
+    if protocol == "post":
+        print(f"Planner ID: {response['plannerId']}")
+    else:
+        print(response)

@@ -7,7 +7,7 @@ def link_builder(base_url, directories) -> str:
 
 # TODO: Setup user authentication system
 
-#There is no use for 'data' in get but to avoid extra positional args, we still pass it as a parameter.
+#There is no use for 'data' in get and delete but to avoid extra positional args, we still pass it as a parameter.
 def get(url, param, data):
     return requests.get(url, params = param)
 
@@ -17,10 +17,7 @@ def post(url, param, data):
 def patch(url, param, data):
     return requests.patch(url, data = data, params = param)
 
-def post(url, param, data):
-    return requests.post(url, data = data, params = param)
-
-def delete(url, param):
+def delete(url, param, data):
     return requests.delete(url, params = param)
 
 

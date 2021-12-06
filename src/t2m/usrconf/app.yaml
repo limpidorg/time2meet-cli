@@ -1,0 +1,27 @@
+user_settings:
+  userId: null
+  password: null
+  timezone: 10
+  userName: null
+---
+r_settings:
+  delete: null
+  patch: null
+  planner:
+    get:
+      plannerId: 471ff606a01b89bd12
+    post:
+      notAfter: 1639297581.309199
+      notBefore: 1638692781.309199
+      plannerName: Meeting
+    patch:
+      notAfter: 1639297581.309199
+      notBefore: 1638692781.309199
+      plannerId: 471ff606a01b89bd12
+    delete:
+      plannerId: 471ff606a01b89bd12
+
+---
+app_settings:
+  base_url: https://time2meetapis.yyjlincoln.app/
+  init: false

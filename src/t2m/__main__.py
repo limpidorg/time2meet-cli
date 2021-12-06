@@ -7,68 +7,7 @@ from t2m import planner
 
 yaml_dirr = str()
 yaml_files = dict()
-
 base_url = str()
-
-
-#Simple yaml manager to read and update app.yaml
-#
-def yaml_manage(update = False, update_key = None, update_value = None):
-
-    #Use global directory and file.
-    global yaml_dirr, yaml_files
-
-    #Finding app.yaml.
-    yaml_dirr = os.getcwd()+ "/t2m/usrconf/app.yaml"
-    yaml_files = {}
-
-
-    #Parsing and checking the validation of the yaml file.
-    with open(yaml_dirr, "r") as f:
-        confirm_yaml = 0
-        yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
-        for files in yf:
-            try:
-                yaml_files['app_settings'] = files["app_settings"]
-                confirm_yaml += 1
-
-            except:
-                try:
-                    yaml_files['user_settings'] = files["user_settings"]
-                    confirm_yaml += 1
-
-                except:
-                    yaml_files['r_settings'] = files["r_settings"]
-                    confirm_yaml += 1
-
-        if confirm_yaml != 3:
-            print(f"YAML file broken. Check {yaml_dirr}.")
-            quit()
-
-
-    if not update:
-        return
-
-
-        
-    #Creating a copy and modifiying said copy to then dump into app.yaml to update it.
-    for files in yf:
-        if list(files.keys())[0] == "user_settings":
-            if  type(files["user_settings"][update_key]) != type(update_value):
-                try:
-                    update_value = eval(type(files["user_settings"][update_key]).__name__)(update_value)
-                except:
-                    print(f"""Invalid value entered for {files['user_settings'][update_key]}.
-                            Expected {type(files['user_settings'][update_key]).__name__}, got {type(update_value).__name}.""")
-                    quit()
-            files["user_settings"][update_key] = update_value
-            break
-
-
-    with open(yaml_dirr, "w") as f:
-        yaml.dump_all(yf, f, default_flow_style = False)
-        print("Updated user settings.")
-
 
 
 
@@ -122,6 +61,7 @@ def main(args=None):
     #Init parser
     request_parser = argparse.ArgumentParser()
 
+
     request_parser.add_argument(
         "protocol", nargs = "?", default = "none", 
         help = """protocol -> string \n
@@ -155,8 +95,6 @@ def main(args=None):
     update = args.updateconfig
 
 
-    # TODO: Create other handlers and get their values from args to then use globals() to treat it as a method 
-    # TODO: Using a yaml file, define what to use in the JSON for different protocols.
 
     if update:
         yaml_manage(True, update[0], update[1])
@@ -165,8 +103,6 @@ def main(args=None):
         globals()[path](protocol, yaml_files["app_settings"]["base_url"], path, construct_json(protocol, path, data, yaml_files))
 
 
-    #planner_handler.py ->
-    #planner(protocol, base_url, path, data)
 
 
 if __name__ == "__main__":
