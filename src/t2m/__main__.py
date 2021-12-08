@@ -1,9 +1,13 @@
 import os
 import argparse
 import sys
-import yaml
 
-from t2m import planner
+import planner
+import user
+import request_handler as rh
+
+from planner import *
+from user import *
 
 yaml_dirr = str()
 yaml_files = dict()
@@ -12,101 +16,98 @@ base_url = str()
 
 
 
-#Basic JSON constructor.
-#Takes its parameters from CLI args, then checks it if they are valid.
+# A way to list all methods of a path
 #
-def construct_json(protocol, path, data, y):
-    #Finding the validator.
-    y = y['r_settings'][f'{path}'][f'{protocol}']
-    if not data:
-        print("Your --data should have the following values in the same order:")
-        for key in y:
-            print(f"{key}")
+def list_methods(path):
+    return dir(path)
 
-        print(f"You've entered: {data}")
-        quit()
-
-    rjson = {}
-
-    y_keys = list(y.keys())
-    y_values = list(y.values())
-
-    # ISSUE: Updating the user config messes up the order of other files in app.yaml. This is a simple workaround and should be investigated more deeply.
-
-    y_keys.reverse()
-    y_values.reverse()
-
-    #Checking if the data is valid.
-    for i in range(len(data)):
-        if  type(y_values[i]) != type(data[i]):
-            try:
-                data[i] = eval(type(y_values[i]).__name__)(data[i])
-            except:
-                print(f"Invalid value entered for {y_keys[i]}. Expected {type(y_values[i]).__name__}, got {type(data[i]).__name__}")
-                quit()
-
-    #Constructing the JSON.
-    for i in range(len(data)):
-        rjson[y_keys[i]] = data[i]
-
-    return rjson
-
-
-
+#The main routine.
+#
 def main(args=None):
-    #The main routine.
     if args is None:
         args = sys.argv[1:]
 
     #Init parser
-    request_parser = argparse.ArgumentParser()
-
-
-    request_parser.add_argument(
-        "protocol", nargs = "?", default = "none", 
-        help = """protocol -> string \n
-            [GET, POST, PATCH, DELETE]"""
-        )
+    request_parser = argparse.ArgumentParser(prog = "t2m", add_help = False)
 
     request_parser.add_argument(
-        "path", nargs = "?", default = "none",
-        help = """path -> string \n
-                Enter your desired path to send request to."""
-        )
+            "path", nargs = "?", default = None,
+            help = """path -> string \n
+                Enter your desired path to send request to. \n
+                [planner, user]"""
+                )
 
     request_parser.add_argument(
-            "--updateconfig", nargs = 2,
-            help = """Update user_settings in app.yaml"""
+            "method", nargs = "?", default = None,
+            help = """methods -> string \n
+                Enter the method you want to execute for the path."""
+                )
+
+    request_parser.add_argument(
+            "-p", "--params", nargs = "*", default = None,
+            help = """params -> str \n
+                Enter the required parameters for methods."""
             )
 
     request_parser.add_argument(
-        "--data", nargs = "*",
-        help = """data -> appropiate JSON for specified protocol \n
-                See the Docs."""
-        )
+            "-h", "--help", nargs = "?", action="store",
+            help = "Required arguments -> path, method."
+            )
 
     args = request_parser.parse_args()
+    params = args.params
 
-    #parse_args() returns the arguments we created as variables. By default they are all string
+    try:
+        path = args.path.lower()
 
-    protocol = args.protocol.lower()
-    path = args.path
-    data = args.data
-    update = args.updateconfig
+    except:
+        print(request_parser.format_help())
+        os._exit(1)
 
+    method = args.method
 
+    #Show available methods if it's missing
+    if not method:
+        try:
+            methods = list_methods(globals()[path])
+            print(f"Avaliable methods for {path}:")
 
-    if update:
-        yaml_manage(True, update[0], update[1])
-    else:
-        yaml_manage()
-        globals()[path](protocol, yaml_files["app_settings"]["base_url"], path, construct_json(protocol, path, data, yaml_files))
+            for m in methods:
+                print(f"\033[1;36;1m \033")
+                print(m)
 
+            print()
+
+        except:
+            print()
+            print(f"\033[31mPath:\033 \033[1;36;1m'{path}'\033[0m \033[31mdoes not exist.\033[0m")
+            print()
+            print(request_parser.format_help())
+
+        os._exit(1)
+
+    if not params:
+        try:
+            param = globals()[method].__code__.co_varnames[:globals()[method].__code__.co_argcount]
+            print(f"Parameters required for {method}:")
+
+            for p in param:
+                print(f"\033[1;36;1m \033")
+                print(p)
+
+            print()
+
+        except:
+            print()
+            print(f"\033[31mMethod:\033 \033[1;36;1m'{method}'\033[0m \033[31mdoes not exist.\033[0m")
+            print()
+            print(request_parser.format_help())
+
+        os._exit(1)
 
 
 
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

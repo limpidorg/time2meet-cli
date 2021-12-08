@@ -1,12 +1,24 @@
 user_settings:
   userId: 123asd
   userName: johndoe
-  password: johndoe123
-  timezone: 10
+  email: johndoe@example.com
+  timeShift: 0.0
 ---
 r_settings:
-  delete: null
-  patch: null
+  user:
+    get:
+      userId: 123asd
+      targetUserId: 123asd
+    post:
+      userName: johndoe
+      email: johndoe@example.com
+      password: 1234johndoe
+    patch:
+      userName: johndoe
+      email: johndoe@example.com
+      timeShift: 0.0
+    delete:
+      userId: 123asd
   planner:
     get:
       plannerId: 471ff606a01b89bd12
@@ -20,7 +32,22 @@ r_settings:
       plannerId: 471ff606a01b89bd12
     delete:
       plannerId: 471ff606a01b89bd12
-
+    token:
+      get:
+        userId: 123asd
+        token: 123token
+      post:
+        email: johndoe@example.com
+        password: 1234johndoe
+        maxAge: 604800
+        scopes: []
+      delete:
+        userId: 123asd
+        token: 123token
+    password:
+      patch:
+        userId: 123asd
+        password: 1234johndoe
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/
