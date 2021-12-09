@@ -1,2 +1,3 @@
-global-include *.yaml
+global-include def.yaml
+global-exclude app.yaml
 include requirements.txt
