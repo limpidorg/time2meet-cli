@@ -88,6 +88,9 @@ def main(args=None):
         print("\033[33mAvailable paths:\033[0m")
         print_err(paths, True, request_parser, "Path")
 
+    elif path not in paths:
+        print_err(path, False, request_parser, "Path")
+
     try:
         path = args.path.lower()
 

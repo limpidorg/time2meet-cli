@@ -1,6 +1,6 @@
 import yaml
 import os
-import getpass
+from getpass import getpass
 
 #Simple yaml manager to read and update app.yaml
 #
@@ -93,7 +93,9 @@ def yaml_update(update_key, update_value, reset = False):
                 except:
                     print(f"""Invalid value entered for {files['user_settings'][update_key]}.
                             Expected {type(files['user_settings'][update_key]).__name__}, got {type(update_value).__name__}.""")
-                    quit()
+
+                    os._exit(1)
+
             files["user_settings"][update_key] = update_value
 
         files["app_settings"]["init"] = True

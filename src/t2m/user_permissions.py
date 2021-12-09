@@ -9,7 +9,7 @@ def __dir__():
 
 
 def user_permissions_req(protocol, param = None, data = None):
-    response = request(protocol, "user-permissions", param = param, data = data)
+    return request(protocol, "user-permissions", param = param, data = data)
 
 
 #Create a new token

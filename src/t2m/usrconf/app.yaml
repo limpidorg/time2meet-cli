@@ -3,7 +3,7 @@ user_settings:
   userName: p1ckl
   email: egeerksen@gmail.com
   timeShift: 3.0
-  planners: null
+  planners: []
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/

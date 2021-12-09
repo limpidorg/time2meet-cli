@@ -11,8 +11,9 @@ def __dir__():
 
 
 def user_req(protocol, param = None, data = None):
-    response = request(protocol, "user", param = param, data = data)
+    print(request(protocol, "user", param = param, data = data))
 
+    
 
 #Print out current user_info
 #
@@ -41,8 +42,10 @@ def register():
         os._exit(1)
     data = {"userName": username, "email": email, "password": pswrd, "timeShift": timeshift} 
 
-    if user_req("post", data = data):
-        return data
+    print(type(user_req("post", data = data)))
+    #if user_req("post", data = data):
+     #   for keys, values in data:
+      #      yaml_update(keys, values, False)
 
 
 #Change profile settings

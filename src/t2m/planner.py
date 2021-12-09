@@ -2,7 +2,7 @@ import os
 from .request_handler import request
 from .yaml_validator import yaml_user, yaml_update
 from datetime import datetime
-import getpass
+from getpass import getpass
 
 
 def __dir__():
@@ -11,13 +11,12 @@ def __dir__():
 
 #Basic planner functions using Time2Meet API
 def planner_req(protocol, param = None, data = None):
-    response = request(protocol, "planner", param = param, data = data)
+    return request(protocol, "planner", param = param, data = data)
 
 
 #Create a planner
 #
 def create_planner():
-    print("huh")
     tok = getpass("Enter your token: ")
     meeting_name = input("Enter a name for your meeting: ")
     day, month, year = map(int, input("Please enter the date of the meeting in DD-MM-YYYY format: ").split("-"))
@@ -36,7 +35,7 @@ def create_planner():
     resp = planner_req("post", {"plannerName": meeting_name, "userId": user_id, "token": tok, "plannerName": meeting_name}, {"notBefore" : end, "notAfter": start})
 
     if resp:
-        yaml_update("plannerId", resp)
+        yaml_update("plannerId", yaml_user()["planner"].append(resp[plannerId]))
 
 
 #Edit an existing planner

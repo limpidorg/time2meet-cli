@@ -9,7 +9,7 @@ def __dir__():
 
 
 def password_req(protocol, param = None, data = None):
-    response = request(protocol, "password", param = param, data = data)
+    return request(protocol, "password", param = param, data = data)
 
 
 #Simple password changer

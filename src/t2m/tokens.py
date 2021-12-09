@@ -1,5 +1,5 @@
 import os
-import getpass
+from getpass import getpass
 from .request_handler import request
 from .yaml_validator import yaml_user
 
@@ -9,7 +9,7 @@ def __dir__():
 
 
 def token_req(protocol, param = None, data = None):
-    response = request(protocol, "token", param = param, data = data)
+    return request(protocol, "token", param = param, data = data)
 
 
 #Get current token info
