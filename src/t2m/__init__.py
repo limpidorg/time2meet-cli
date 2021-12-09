@@ -1,4 +1,5 @@
 import os
+
 from .planner import *
 from .user import *
 from .tokens import *
@@ -42,10 +43,10 @@ if validation == "set_user" or validation == "register":
 
 #Removing old planners
 #
-print("Deleteing old planners")
-
-for p in yaml_user()["planners"]:
-    delete_planner(p, True)
+if yaml_user()["planners"] is not None:
+    print("Deleteing old planners")
+    for p in yaml_user()["planners"]:
+        delete_planner(p, True)
 
 print("Init complete!")
 

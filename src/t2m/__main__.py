@@ -2,10 +2,7 @@ import os
 import argparse
 import sys
 
-import planner
-import user
-import tokens
-import update_password
+from t2m import user, planner, tokens, update_password
 
 from .planner import *
 from .user import *

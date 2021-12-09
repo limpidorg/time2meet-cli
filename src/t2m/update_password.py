@@ -1,7 +1,7 @@
 import os
 from getpass import getpass
-from request_handler import request
-from yaml_validator import yaml_user
+from .request_handler import request
+from .yaml_validator import yaml_user
 
 
 def __dir__():

@@ -79,7 +79,7 @@ def delete_profile():
 
     if confirm == "confirm":
         pswrd = getpass("Please enter your password: ")
-        if user_req("delete", {"password": pswrd, "userId": yalm_user()["userId"]}):
+        if user_req("delete", {"password": pswrd, "userId": yaml_user()["userId"]}):
             yaml_reset()
 
     else:

@@ -1,10 +1,10 @@
 user_settings:
-  userId: null
-  userName: null
-  email: null
-  timeShift: null
+  userId: 08d7952ab8ae993f
+  userName: p1ckl
+  email: egeerksen@gmail.com
+  timeShift: 3.0
   planners: null
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/
-  init: false
+  init: true
