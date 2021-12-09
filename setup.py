@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as f:
 
 setup(
     name = "time2meet-cli",
-    version = "0.1.0",
+    version = "1.0.0",
     packages = find_packages(where = "src", include = "t2m"),
     package_dir = {"" : "src"},
     include_package_data = True,

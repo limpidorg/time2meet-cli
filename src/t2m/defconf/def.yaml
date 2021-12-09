@@ -3,6 +3,7 @@ user_settings:
   userName: johndoe
   email: johndoe@example.com
   timeShift: 0.0
+  planners: ["plannerId1", "plannerId2"]
 ---
 r_settings:
   user:
@@ -40,7 +41,7 @@ r_settings:
         email: johndoe@example.com
         password: 1234johndoe
         maxAge: 604800
-        scopes: []
+        scopes: ["read", "write"]
       delete:
         userId: 123asd
         token: 123token
