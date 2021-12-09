@@ -1,9 +1,9 @@
 user_settings:
-  userId: 08d7952ab8ae993f
-  userName: p1ckl
-  email: egeerksen@gmail.com
-  timeShift: 3.0
+  email: a11@example.com
   planners: []
+  timeShift: 10799.999993085861
+  userId: 08d7952ab8ae993f
+  userName: a11
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/

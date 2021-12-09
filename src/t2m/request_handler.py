@@ -85,7 +85,4 @@ def request(protocol, path = None, param = None, data = None):
         print(f"Request failed! \nError: {err}")
         return False
 
-    finally:
-        os._exit(1)
-
 

@@ -96,9 +96,9 @@ def yaml_update(update_key, update_value, reset = False):
 
                     os._exit(1)
 
-            files["user_settings"][update_key] = update_value
+    yf[0]["user_settings"][update_key] = update_value
 
-        files["app_settings"]["init"] = True
+    yf[1]["app_settings"]["init"] = True
 
     with open(yaml_dirr, "w") as f:
         yaml.dump_all(yf, f, default_flow_style = False)
