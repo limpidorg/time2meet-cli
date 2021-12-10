@@ -17,13 +17,9 @@ def user_req(protocol, param = None, data = None):
 
 #Print out current user_info
 #
-def user_info(user_id = None):
-    if user_id is None:
-        user_id = input("Enter the userId: ")
-
-    tok = getpass("Enter the user's token: ")
-
-    user_req("get", {"userId": user_id, "token": tok})
+def user_info():
+    user_id, tok = new_token(True)
+    return user_req("get", {"userId": user_id, "token": tok})
 
 
 def verify_email():

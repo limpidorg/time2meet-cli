@@ -55,6 +55,10 @@ def delete(url, param, data):
 #A request method that has a dry-run feature
 #
 def request(protocol, path = None, param = None, data = None):
+    if path == "token/login":
+        login = True
+        path = path.split("/")[0]
+
     p, d = construct_json(protocol, path, param, data)
 
     global dry
@@ -69,8 +73,11 @@ def request(protocol, path = None, param = None, data = None):
             for keys, values in response.items():
                 print(f"\033[1;36;1m{keys}:\033[0m {values}")
 
-            if path == "planner" or path == "planners":
+            if path == "planner" or path == "planners" or path == "user":
                 return response
+
+            if path == "token" and login:
+                return response["userId"], response["token"]
 
             return True
 

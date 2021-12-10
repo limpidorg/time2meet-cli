@@ -22,26 +22,28 @@ def token_info():
 
 #Create a new token
 #
-def new_token():
-     email = yaml_user()["email"]
+def new_token(login = False):
+    if login:
+        scopes = ["read", "write"]
+        duration = 70
+        return request("post", "token/login", {"email": input("Enter your email: "), "password": getpass("Enter your password: ")})
 
+    email = yaml_user()["email"]
     print("Creating a new token: ")
-
     try:
         scopes = input("Please enter your desired scopes: ").split()
     except:
         print("Setting scopes to default values: read write")
         scopes = ["read", "write"]
- 
+
     try:
         duration = int(input("How long should this token stay valid in terms of days: "))*24*3600
 
     except:
         print("Setting length to default value: 7")
-        duration = 7
+        duration = 7*24*3600
 
-    if pswrd is None:
-        pswrd = getpass("Enter your password: ")
+    pswrd = getpass("Enter your password: ")
 
     if token_req("post", {"password":  pswrd, "email": email}, {"maxAge": duration, "scopes": json.dumps(scopes)}):
         print("SAVE YOUR TOKEN SOMEWHERE, IT WILL NOT BE SAVED.")

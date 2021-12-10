@@ -21,13 +21,16 @@ if validation == "set_user" or validation == "register":
 
     if validation == "set_user":
         dry_resp = dict()
-        user_id = input("Enter your userId: ")
-        usr = user_info(user_id)
+        usr = user_info()
 
         for keys in list(yaml_user().keys()):
-            if keys not in ["userId","email","timeShift","userName","planners"]:
+            if keys not in ["userId","email","timeShift","userName","planner", "status"]:
                 continue
-            yaml_update(keys, usr[keys]) 
+            if keys == "require-email-verificaiton":
+                if usr["user"]["status"] == "require-email-verifcation":
+                    yaml_update("require-email-verification", True)
+                    continue
+            yaml_update(keys, usr["user"][keys]) 
 
         os._exit(1)
 
