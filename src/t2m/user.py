@@ -55,6 +55,9 @@ def register():
 
         request("post", "email-verification", param = {"userId": user_id, "otp": input("Enter your verificiation code sent to your email: "), "token": getpass("Please enter your token: ")})
 
+    else:
+        os._exit(1)
+
 
 #Change profile settings
 #
