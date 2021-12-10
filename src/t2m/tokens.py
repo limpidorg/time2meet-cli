@@ -2,6 +2,7 @@ import os
 from getpass import getpass
 from .request_handler import request
 from .yaml_validator import yaml_user
+import json
 
 
 def __dir__():
@@ -21,10 +22,18 @@ def token_info():
 
 #Create a new token
 #
-def new_token():
-    email = input("Enter your email: ")
-    scopes = input("Please enter your desired scopes: ").split()
-    
+def new_token(email = None, pswrd = None):
+    if email is None:
+        email = input("Enter your email: ")
+
+    print("Creating a new token: ")
+
+    try:
+        scopes = input("Please enter your desired scopes: ").split()
+    except:
+        print("Setting scopes to default values: read write")
+        scopes = ["read", "write"]
+ 
     try:
         duration = int(input("How long should this token stay valid in terms of days: "))
 
@@ -32,9 +41,11 @@ def new_token():
         print("Setting length to default value: 7")
         duration = 7
 
-    pswrd = getpass("Enter your password: ")
+    if pswrd is None:
+        pswrd = getpass("Enter your password: ")
 
-    token_req("post", {"password":  pswrd, "email": email}, {"maxAge": duration, "scopes": scopes})
+    if token_req("post", {"password":  pswrd, "email": email}, {"maxAge": duration, "scopes": json.dumps({"scopes": scopes})}):
+        print("SAVE YOUR TOKEN SOMEWHERE, IT WILL NOT BE SAVED.")
 
 
 #Delete a token

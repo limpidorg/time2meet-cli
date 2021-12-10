@@ -33,22 +33,32 @@ r_settings:
       plannerId: 471ff606a01b89bd12
     delete:
       plannerId: 471ff606a01b89bd12
-    token:
-      get:
-        userId: 123asd
-        token: 123token
-      post:
-        email: johndoe@example.com
-        password: 1234johndoe
-        maxAge: 604800
-        scopes: ["read", "write"]
-      delete:
-        userId: 123asd
-        token: 123token
-    password:
-      patch:
-        userId: 123asd
-        password: 1234johndoe
+  token:
+    get:
+      userId: 123asd
+      token: 123token
+    post:
+      email: johndoe@example.com
+      password: 1234johndoe
+      maxAge: 604800
+      scopes: '{"scopes": ["read", "write"]}'
+    delete:
+      userId: 123asd
+      token: 123token
+  password:
+    get:
+      userId: 123asd
+      post: ASD123
+      newPassword: 12345johndoe
+      userId: 123asd
+      otp: 
+    patch:
+      userId: 123asd
+      password: 1234johndoe
+  email-verification:
+    post:
+      userId: 123asd
+      otp: ASD123
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/

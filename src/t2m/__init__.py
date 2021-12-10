@@ -22,24 +22,16 @@ if validation == "set_user" or validation == "register":
     if validation == "set_user":
         dry_resp = dict()
         user_id = input("Enter your userId: ")
-
         usr = user_info(user_id)
 
         for keys in list(yaml_user().keys()):
             yaml_update(keys, usr[keys]) 
 
-
         os._exit(1)
 
-    cred = globals()[validation]
 
     if validation == "register":
-        validation = "user"
-
-    data = register()
-
-    for keys in data:
-        yaml_update(keys, data[keys])
+        data = register()
 
 #Removing old planners
 #

@@ -2,6 +2,7 @@ import os
 from getpass import getpass
 from .request_handler import request
 from .yaml_validator import yaml_user, yaml_update, yaml_reset
+from .tokens import new_token
 from datetime import  datetime
 import json
 
@@ -12,8 +13,7 @@ def __dir__():
 
 def user_req(protocol, param = None, data = None):
     return request(protocol, "user", param = param, data = data)
-
-    
+ 
 
 #Print out current user_info
 #
@@ -48,6 +48,12 @@ def register():
                 continue
 
             yaml_update(keys, values, False)
+
+        user_id = input("Enter your userId: ")
+        yaml_update("userId", user_id, False)
+        new_token(email, pswrd)
+
+        request("post", "email-verification", param = {"userId": user_id, "otp": input("Enter your verificiation code sent to your email: "), "token": getpass("Please enter your token: ")})
 
 
 #Change profile settings
@@ -86,6 +92,7 @@ def delete_profile():
         pswrd = getpass("Please enter your password: ")
         if user_req("delete", {"password": pswrd, "userId": yaml_user()["userId"]}):
             yaml_reset()
+            os._exit(1)
 
     else:
         print("Confirmaiton failed, stopping.")

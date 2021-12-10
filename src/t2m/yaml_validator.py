@@ -2,29 +2,32 @@ import yaml
 import os
 from getpass import getpass
 
+
 #Creates a new yaml file if it doesn't exist.
 #
 def yaml_init():
-    if not os.path.isdir("./usrconf"):
-        os.makedirs("./usrconf")
+    dirr = os.path.dirname(os.path.realpath(__file__)) + "/usrconf"
+    if not os.path.isdir(dirr):
+        os.makedirs(dirr)
 
-    if not os.path.isfile("./usrconf/app.yaml"):
+    if not os.path.isfile(f"{dirr}/app.yaml"):
         yf = list(yaml_default())
         del yf[1]
-        
-        for keys in list(yf[0]["user_settings"].keys()):
-            yf[0]["user_settings"] = None
 
-        yf[1]["app_settings"]["init"] = False
+        a_yf = [{"user_settings": {}}, {"app_settings": {}}]
+        for keys in list(yf[0].keys()):
+            a_yf[0]["user_settings"][keys] = None
 
-        with open("./usrconf/app.yaml", "w+") as f:
-            yaml.dump_all(yf, f, default_flow_style = False)
+        yf[1]["init"] = False
+
+        for keys in list(yf[1].keys()):
+            a_yf[1]["app_settings"][keys] = yf[1][keys]
+
+
+        with open(f"{dirr}/app.yaml", "w+") as f:
+            yaml.dump_all(a_yf, f, default_flow_style = False)
 
     return yaml_validate()
-
-
-
-
 
 
 #Simple yaml manager to read and update app.yaml
@@ -36,7 +39,6 @@ def yaml_validate(skip_init = False):
     def_dirr = os.path.dirname(os.path.realpath(__file__)) + "/defconf/def.yaml"
 
     #Parsing and checking the validation of the app.yaml using def.yaml for reference
-    print("Validating YAML file.")
     with open(def_dirr, "r") as f:
         def_yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
 
@@ -62,8 +64,6 @@ def yaml_validate(skip_init = False):
                     print(f"YAML file broken. Missing settings in app_settings.")
                     print(f"Expected: {list(def_yf[i]['app_settings'].keys())}, got {list(yf[i]['app_settings'].keys())}")
                     os._exit(1)
-
-        print("YAML file valid.")
 
         if skip_init:
             return yf
@@ -92,6 +92,8 @@ def yaml_user():
 #
 def yaml_default():
     global def_dirr
+    def_dirr = os.path.dirname(os.path.realpath(__file__)) + "/defconf/def.yaml"
+
     with open(def_dirr, "r") as f:
         def_yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
 
@@ -105,32 +107,38 @@ def yaml_default():
 #
 def yaml_update(update_key, update_value, reset = False):
     yf = yaml_validate(True)
+    user, _, _ = yaml_default()
     #Creating a copy and modifiying said copy to then dump into app.yaml to update it.
     for files in yf:
+        if reset:
+            break
         if list(files.keys())[0] == "user_settings":
 
             if update_key == "password":
                 continue
 
-            if  type(files["user_settings"][update_key]) != type(update_value) and not reset:
+            if type(user[update_key]) != type(update_value):
                 try:
-                    update_value = eval(type(files["user_settings"][update_key]).__name__)(update_value)
+                    update_value = eval(type(user[update_key]).__name__)(update_value)
                 except:
-                    print(f"""Invalid value entered for {files['user_settings'][update_key]}.
-                            Expected {type(files['user_settings'][update_key]).__name__}, got {type(update_value).__name__}.""")
+                    print(f"""Invalid value entered for {user[update_key]}. Expected {type(user[update_key]).__name__}, got {type(update_value).__name__}.""")
 
                     os._exit(1)
 
     yf[0]["user_settings"][update_key] = update_value
 
-    yf[1]["app_settings"]["init"] = True
+    if reset:
+        yf[1]["app_settings"]["init"] = False
+
+    else:
+        yf[1]["app_settings"]["init"] = True
 
     with open(yaml_dirr, "w") as f:
         yaml.dump_all(yf, f, default_flow_style = False)
         print("Updated user settings.")
 
     #Finally, validating the updated file
-    yaml_validate()
+    yaml_validate(True)
 
 
 #Gets the base url
@@ -146,6 +154,7 @@ def base_url():
 #
 def yaml_reset():
     for keys in yaml_user():
-        yaml_update(update_key, None, True)
+        yaml_update(keys, None, True)
+
 
 

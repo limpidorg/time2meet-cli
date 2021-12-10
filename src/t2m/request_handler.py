@@ -5,12 +5,12 @@ import os
 #JSON constructor for request
 def construct_json(protocol, path, param, data):
     #Checking if the values entered are valid
-    user, request = yaml_default()
+    user, request, _ = yaml_default()
     if not param is None:
-        for keys in list(request.keys()):
+        for keys in list(param.keys()):
             if keys in list(request[path][protocol].keys()):
                 try:
-                    param[keys] = eval(type(request[path][param][keys]).__name__)(param[keys])
+                    param[keys] = eval(type(request[path][protocol][keys]).__name__)(param[keys])
 
                 except:
                     print(f"Invalid value entered for {keys}. Expected {type(request[path][protocol][keys]).__name__}, got {param[keys]}.")
@@ -67,7 +67,7 @@ def request(protocol, path = None, param = None, data = None):
         response = globals()[protocol](link_builder(path), p, d).json()
         if not response["code"]:
             for keys, values in response.items():
-                print(f"{keys}: {values}")
+                print(f"\033[1;36;1m{keys}:\033[0m {values}")
 
             if path == "planner":
                 return response
