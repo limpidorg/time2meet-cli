@@ -26,6 +26,7 @@ if validation == "set_user" or validation == "register":
 
         for keys in list(yaml_user().keys()):
             if keys not in ["userId","email","timeShift","userName","planners"]:
+                continue
             yaml_update(keys, usr[keys]) 
 
         os._exit(1)
