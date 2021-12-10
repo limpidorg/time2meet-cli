@@ -2,6 +2,31 @@ import yaml
 import os
 from getpass import getpass
 
+#Creates a new yaml file if it doesn't exist.
+#
+def yaml_init():
+    if not os.path.isdir("./usrconf"):
+        os.makedirs("./usrconf")
+
+    if not os.path.isfile("./usrconf/app.yaml"):
+        yf = list(yaml_default())
+        del yf[1]
+        
+        for keys in list(yf[0]["user_settings"].keys()):
+            yf[0]["user_settings"] = None
+
+        yf[1]["app_settings"]["init"] = False
+
+        with open("./usrconf/app.yaml", "w+") as f:
+            yaml.dump_all(yf, f, default_flow_style = False)
+
+    return yaml_validate()
+
+
+
+
+
+
 #Simple yaml manager to read and update app.yaml
 #
 def yaml_validate(skip_init = False):
@@ -18,7 +43,6 @@ def yaml_validate(skip_init = False):
     del def_yf[1]
 
     with open(yaml_dirr, "r") as f:
-
         yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
         if len(yf) > 2:
             print("Extra file detected in app.yaml")
@@ -73,7 +97,8 @@ def yaml_default():
 
     user = def_yf[0]["user_settings"]
     r = def_yf[1]["r_settings"]
-    return user, r
+    app = def_yf[2]["app_settings"]
+    return user, r, app
 
 
 #Updating user config

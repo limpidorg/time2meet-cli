@@ -6,7 +6,7 @@ from .tokens import *
 from .yaml_validator import *
 from .request_handler import set_dry
 
-validation = yaml_validate()
+validation = yaml_init()
 
 #Logging/Register the user
 #
