@@ -4,7 +4,7 @@ from .request_handler import request
 from .yaml_validator import yaml_user
 
 
-def __dir__():
+def list_methods():
     return ["change_password", "reset_password"]
 
 

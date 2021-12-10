@@ -106,27 +106,22 @@ def yaml_update(update_key, update_value, reset = False):
     yf = yaml_validate(True)
     user, _, _ = yaml_default()
     #Creating a copy and modifiying said copy to then dump into app.yaml to update it.
-    for files in yf:
-        if reset:
-            break
-        if list(files.keys())[0] == "user_settings":
+    if not reset:
 
-            if update_key == "password":
-                continue
+        if update_key == "password":
+            return 
 
-            if type(user[update_key]) != type(update_value):
-                try:
-                    update_value = eval(type(user[update_key]).__name__)(update_value)
-                except:
-                    print(f"""Invalid value entered for {update_key}. Expected {type(user[update_key]).__name__}, got {update_value}.""")
-
-                    os._exit(1)
+        elif type(user[update_key]) != type(update_value):
+            try:
+                update_value = eval(type(user[update_key]).__name__)(update_value)
+            except:
+                print(f"""Invalid value entered for {update_key}. Expected {type(user[update_key]).__name__}, got {update_value}.""")
+                os._exit(1)
 
     yf[0]["user_settings"][update_key] = update_value
 
     if reset:
         yf[1]["app_settings"]["init"] = False
-
     else:
         yf[1]["app_settings"]["init"] = True
 
@@ -143,7 +138,7 @@ def yaml_update(update_key, update_value, reset = False):
 def base_url():
     with open(def_dirr, "r") as f:
         def_yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
-        
+
     return def_yf[2]["app_settings"]["base_url"]
 
 

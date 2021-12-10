@@ -15,20 +15,24 @@ if validation == "set_user" or validation == "register":
 
     if validation == "set_user":
         dry_resp = dict()
-        usr = user_info()
+        usr, tok = user_info(True)
 
         for keys in list(yaml_user().keys()):
             if keys == "require-email-verification":
                 if usr["user"]["status"] == "require-email-verification":
                     yaml_update("require-email-verification", True)
                     continue
+                elif usr["user"]["status"] == "active":
+                    yaml_update("require-email-verification", False)
+                    continue
 
             if keys not in list(usr["user"].keys()) and keys != "require-email-verification":
                 continue
 
+            print(keys)
             yaml_update(keys, usr["user"][keys]) 
 
-        get_list_planners()
+        get_list_planners(tok)
 
     if validation == "register":
         register()
@@ -41,5 +45,4 @@ if yaml_user()["require-email-verification"]:
 #Removing old planners
 #
 print("Init complete!")
-
 

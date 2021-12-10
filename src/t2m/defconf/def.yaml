@@ -34,6 +34,8 @@ r_settings:
       plannerId: 471ff606a01b89bd12
     delete:
       plannerId: 471ff606a01b89bd12
+      token: 123token
+      userId: 123asd
   token:
     get:
       userId: 123asd

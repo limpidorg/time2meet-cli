@@ -1,8 +1,9 @@
 import os
 import argparse
 import sys
+import inspect
 
-from t2m import user, planner, tokens, update_password
+from t2m import user, planner, tokens, update_password, user_permissions
 
 from .planner import *
 from .user import *
@@ -31,8 +32,8 @@ def print_err(err, success, pars, varn):
 
 # A way to list all methods of a path
 #
-def list_methods(path):
-    return dir(path)
+def list_method(path):
+    return path.list_methods()
 
 #The main routine
 #
@@ -82,13 +83,13 @@ def main(args=None):
     set_dry(args.dry)
 
     #Create a list available endpoints
-    paths = ["planner", "tokens", "user", "update_password"]
+    paths = {"user": user, "planner": planner, "token": tokens, "update_password": update_password, "user_permissions": user_permissions}
 
     if not path:
         print("\033[33mAvailable paths:\033[0m")
         print_err(paths, True, request_parser, "Path")
 
-    elif path not in paths:
+    elif path not in list(paths):
         print_err(path, False, request_parser, "Path")
 
     try:
@@ -98,8 +99,10 @@ def main(args=None):
         print(request_parser.format_help())
         os._exit(1)
 
+    path = paths[path]
+
     #Create a list of available methods
-    methods = list_methods(globals()[path])
+    methods = list_method(path)
 
     #Show available methods
     if not method or method not in methods:
@@ -109,12 +112,12 @@ def main(args=None):
             
         except:
             print_err(path, False, request_parser, "Path")
+    else:
+        method = globals()[method]
 
-    #Create a list of available methods
-    param = globals()[method].__code__.co_varnames[:globals()[method].__code__.co_argcount]
-
+    param = method.__code__.co_varnames[:method.__code__.co_argcount]
     #Show required parameters
-    if not params and param and params is not globals()[method].__defaults__[0]:
+    if not params and param and params is not method.__defaults__[0]:
         try:
             print(f"\033[33mParameters required for {method}:\033[0m")
             print_err(param, True, request_parser, "Param")
@@ -123,9 +126,9 @@ def main(args=None):
             print_err(method, False, request_parser, "Method")
 
     if param:
-        globals()[method](params)
+        method(params)
     else:
-        globals()[method]()
+        method()
 
 if __name__ == "__main__":
     sys.exit(main())

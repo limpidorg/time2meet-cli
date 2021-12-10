@@ -5,7 +5,7 @@ from .yaml_validator import yaml_user
 import json
 
 
-def __dir__():
+def list_methods():
     return ["token_info", "new_token", "delete_token"]
 
 
@@ -26,8 +26,9 @@ def new_token(login = False):
     if login:
         scopes = ["read", "write"]
         duration = 70
-        return request("post", "token/login", {"email": input("Enter your email: "), "password": getpass("Enter your password: ")})
+        usr, tok =  request("post", "token/login", {"email": input("Enter your email: "), "password": getpass("Enter your password: "), "scopes": json.dumps(scopes), "maxAge": duration})
 
+        return usr, tok
     email = yaml_user()["email"]
     print("Creating a new token: ")
     try:
@@ -56,7 +57,7 @@ def delete_token():
 
     if confirm == "confirm":
         tok = getpass("Please enter your token: ")
-        user_req("delete", {"token": tok, "userId": yaml_user()["userId"]})
+        token_req("delete", {"token": tok, "userId": yaml_user()["userId"]})
 
     else:
         print("Confirmaiton failed, stopping.")

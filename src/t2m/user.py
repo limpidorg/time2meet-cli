@@ -7,8 +7,8 @@ from datetime import  datetime
 import json
 
 
-def __dir__():
-    return ["user_info", "register", "edit_profile", "delete_profile"]
+def list_methods():
+    return ["user_info", "register", "edit_profile", "delete_profile", "change_account"]
 
 
 def user_req(protocol, param = None, data = None):
@@ -17,13 +17,26 @@ def user_req(protocol, param = None, data = None):
 
 #Print out current user_info
 #
-def user_info():
+def user_info(ret_tok = False):
     user_id, tok = new_token(True)
+    if ret_tok:
+        return user_req("get", {"userId": user_id, "token": tok}), tok
+
     return user_req("get", {"userId": user_id, "token": tok})
 
 
-def verify_email():
 
+def change_account():
+    user_id, tok = new_token(True)
+    resp = user_req("get", {"userId": user_id, "token": tok})
+
+    for keys, values in resp["user"].items():
+        if keys == "password":
+            continue
+
+    yaml_update(keys, values, False)
+
+def verify_email():
     tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
 
     set_dry(False)

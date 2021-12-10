@@ -76,7 +76,6 @@ def request(protocol, path = None, param = None, data = None):
                 if keys == "planner":
                     for pkeys, values in response[keys].items():
                         print(f"\033[1;36;1m{pkeys}:\033[0m {values}")
-
                 else:
                     print(f"\033[1;36;1m{keys}:\033[0m {values}")
 

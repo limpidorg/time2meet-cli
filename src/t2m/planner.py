@@ -6,7 +6,7 @@ from getpass import getpass
 import json
 
 
-def __dir__():
+def list_methods():
     return ["create_planner", "edit_planner", "delete_planner", "get_planner", "get_list_planners"]
 
 
@@ -73,7 +73,7 @@ def delete_planner(planner_id, remove_old = False):
     try:
         if input("Are you sure that you want to delete the planner? (Type 'confirm' to delete): ").lower() == "confirm":
             tok = getpass("Enter your token: ")
-            planner_req("delete", {"plannerId": json.dumps(planner_id), "token": tok, "userId": yaml_user()["userId"]})
+            planner_req("delete", {"plannerId": planner_id[0], "token": tok, "userId": yaml_user()["userId"]})
         else:
             print("Confirmation failed, stopping.")
     except:
