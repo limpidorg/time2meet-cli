@@ -57,9 +57,17 @@ r_settings:
       userId: 123asd
       password: 1234johndoe
   email-verification:
+    get:
+      userId: 123asd
+      token: 123token
     post:
       userId: 123asd
       otp: ASD123
+      token: 123token
+  planners:
+    get:
+      token: 123token
+      userId: 123asd
 ---
 app_settings:
   base_url: https://time2meetapis.yyjlincoln.app/

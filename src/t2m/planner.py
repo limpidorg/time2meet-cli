@@ -35,7 +35,7 @@ def create_planner():
     resp = planner_req("post", {"plannerName": meeting_name, "userId": user_id, "token": tok, "plannerName": meeting_name}, {"notBefore" : end, "notAfter": start})
 
     if resp:
-        yaml_update("plannerId", yaml_user()["planner"].append(resp[plannerId]))
+        yaml_update("planner", yaml_user()["planner"].append(resp[plannerId]))
 
 
 #Edit an existing planner
@@ -72,12 +72,23 @@ def delete_planner(planner_id, remove_old = False):
 
 #Get planner details
 #
-def get_planner(planner_id):
+def get_planner(planner_id, token = None):
+    if token is None:
+        tok = getpass("Enter your token: ")
+
     return planner_req("get", {"plannerId": planner_id})
 
 
 #Get all active planners.
 #
 def get_list_planner():
-    for planners in yaml_user()["planners"]:
-        get_planner("planners")
+    tok = getpass("Enter your token: ")
+    planners = request("get", "planners", param = {"token": tok, "userId": yamls_user()["userId"]})
+
+    for planner_id in planners["plannerIds"]: 
+        if planner_id not in yaml_user()["planner"]:
+            yaml_update("planner", yaml_user()["planner".append(planner_id)])
+
+        print(get_planner(planner_id, tok))
+
+

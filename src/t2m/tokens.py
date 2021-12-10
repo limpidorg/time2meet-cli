@@ -22,9 +22,8 @@ def token_info():
 
 #Create a new token
 #
-def new_token(email = None, pswrd = None):
-    if email is None:
-        email = input("Enter your email: ")
+def new_token():
+     email = yaml_user()["email"]
 
     print("Creating a new token: ")
 
@@ -35,7 +34,7 @@ def new_token(email = None, pswrd = None):
         scopes = ["read", "write"]
  
     try:
-        duration = int(input("How long should this token stay valid in terms of days: "))
+        duration = int(input("How long should this token stay valid in terms of days: "))*24*3600
 
     except:
         print("Setting length to default value: 7")

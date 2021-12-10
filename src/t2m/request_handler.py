@@ -69,7 +69,7 @@ def request(protocol, path = None, param = None, data = None):
             for keys, values in response.items():
                 print(f"\033[1;36;1m{keys}:\033[0m {values}")
 
-            if path == "planner":
+            if path == "planner" or path == "planners":
                 return response
 
             return True

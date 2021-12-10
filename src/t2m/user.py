@@ -28,12 +28,14 @@ def user_info(user_id = None):
 
 def verify_email():
     tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
+    print(tok)
 
     set_dry(False)
     if len(tok) == 0:
         new_token()
         tok = getpass("Please enter your token: ")
 
+    request("get", "email-verification", {"userId": yaml_user()["userId"], "token": tok})
     return request("post", "email-verification",
             param = {"userId": yaml_user()["userId"],
             "otp": input("Enter your verificiation code sent to your email: "),
