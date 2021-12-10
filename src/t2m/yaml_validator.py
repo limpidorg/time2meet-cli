@@ -118,7 +118,7 @@ def yaml_update(update_key, update_value, reset = False):
                 try:
                     update_value = eval(type(user[update_key]).__name__)(update_value)
                 except:
-                    print(f"""Invalid value entered for {user[update_key]}. Expected {type(user[update_key]).__name__}, got {type(update_value).__name__}.""")
+                    print(f"""Invalid value entered for {update_key}. Expected {type(user[update_key]).__name__}, got {update_value}.""")
 
                     os._exit(1)
 

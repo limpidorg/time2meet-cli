@@ -23,6 +23,7 @@ def user_info():
 
 
 def verify_email():
+
     tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
 
     set_dry(False)
@@ -31,10 +32,13 @@ def verify_email():
         tok = getpass("Please enter your token: ")
 
     request("get", "email-verification", {"userId": yaml_user()["userId"], "token": tok})
-    return request("post", "email-verification",
+    resp = request("post", "email-verification",
             param = {"userId": yaml_user()["userId"],
             "otp": input("Enter your verificiation code sent to your email: "),
             "token": tok})
+
+    if resp:
+        yaml_update("require-email-verification", True)
 
 #Register a new account and set the account for this computer
 #

@@ -73,9 +73,17 @@ def request(protocol, path = None, param = None, data = None):
         response = globals()[protocol](link_builder(path), p, d).json()
         if not response["code"]:
             for keys, values in response.items():
-                print(f"\033[1;36;1m{keys}:\033[0m {values}")
+                if keys == "planner":
+                    for pkeys, values in response[keys].items():
+                        print(f"\033[1;36;1m{pkeys}:\033[0m {values}")
 
-            if path == "planner" or path == "planners" or path == "user":
+                else:
+                    print(f"\033[1;36;1m{keys}:\033[0m {values}")
+
+            if path == "planner" or path == "planners":
+                return response
+
+            if path == "user":
                 return response
 
             if path == "token" and login:
@@ -84,9 +92,9 @@ def request(protocol, path = None, param = None, data = None):
             return True
 
         else:
-            print(f"Something went wrong.")
+            print(f"\033[31mSomething went wrong.")
             print(f"Error code: {response['code']}")
-            print(f"{response['message']}")
+            print(f"{response['message']}\033[0m")
 
             return False
 

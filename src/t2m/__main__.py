@@ -114,7 +114,7 @@ def main(args=None):
     param = globals()[method].__code__.co_varnames[:globals()[method].__code__.co_argcount]
 
     #Show required parameters
-    if not params and param:
+    if not params and param and params is not globals()[method].__defaults__[0]:
         try:
             print(f"\033[33mParameters required for {method}:\033[0m")
             print_err(param, True, request_parser, "Param")

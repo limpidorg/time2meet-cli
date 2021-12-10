@@ -6,18 +6,12 @@ from .tokens import *
 from .yaml_validator import *
 from .request_handler import set_dry
 
+set_dry(False)
 validation = yaml_init()
 
 #Logging/Register the user
 #
 if validation == "set_user" or validation == "register":
-    d = input("Enable dry run for register/login? [y/n]: ").lower()
-
-    if d == "y":
-        set_dry(True)
-
-    else:
-        set_dry(False)
 
     if validation == "set_user":
         dry_resp = dict()
@@ -34,10 +28,10 @@ if validation == "set_user" or validation == "register":
 
             yaml_update(keys, usr["user"][keys]) 
 
-        os._exit(1)
+        get_list_planners()
 
     if validation == "register":
-        data = register()
+        register()
 
 #If the user didn't verify their email, verify it
 #
@@ -46,11 +40,6 @@ if yaml_user()["require-email-verification"]:
 
 #Removing old planners
 #
-if yaml_user()["planners"] is not None:
-    print("Deleteing old planners")
-    for p in yaml_user()["planners"]:
-        delete_planner(p, True)
-
 print("Init complete!")
 
 
