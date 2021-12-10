@@ -31,9 +31,13 @@ if validation == "set_user" or validation == "register":
 
         os._exit(1)
 
-
     if validation == "register":
         data = register()
+
+#If the user didn't verify their email, verify it
+#
+if yaml_user()["require-email-verification"]:
+    verify_email()
 
 #Removing old planners
 #

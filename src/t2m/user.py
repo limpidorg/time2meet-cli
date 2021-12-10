@@ -26,6 +26,18 @@ def user_info(user_id = None):
     user_req("get", {"userId": user_id, "token": tok})
 
 
+def verify_email():
+    tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
+
+    if len(tok) == 0:
+        new_token()
+        tok = getpass("Please enter your token: ")
+
+    return request("post", "email-verification",
+            param = {"userId": yaml_user()["userId"],
+            "otp": input("Enter your verificiation code sent to your email: "),
+            "token": tok})
+
 #Register a new account and set the account for this computer
 #
 def register():
@@ -53,7 +65,8 @@ def register():
         yaml_update("userId", user_id, False)
         new_token(email, pswrd)
 
-        request("post", "email-verification", param = {"userId": user_id, "otp": input("Enter your verificiation code sent to your email: "), "token": getpass("Please enter your token: ")})
+        if verify_email():
+            yaml_update("require-email-verificaiton", True, False)
 
     else:
         os._exit(1)
