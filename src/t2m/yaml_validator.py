@@ -39,31 +39,28 @@ def yaml_validate(skip_init = False):
     def_dirr = os.path.dirname(os.path.realpath(__file__)) + "/defconf/def.yaml"
 
     #Parsing and checking the validation of the app.yaml using def.yaml for reference
-    with open(def_dirr, "r") as f:
-        def_yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
-
-    del def_yf[1]
+    user, _, app = yaml_default()
 
     with open(yaml_dirr, "r") as f:
         yf = list(yaml.load_all(f, Loader=yaml.FullLoader))
+
         if len(yf) > 2:
             print("Extra file detected in app.yaml")
             os._exit(1)
+
         elif len(yf) < 2:
             print("Missing file in app.yaml")
             os._exit(1)
-        for i in range(2):
-            try:
-                if yf[i]["user_settings"].keys() != set(def_yf[i]["user_settings"].keys()):
-                    print(f"YAML file broken. Missing settings in user_settings.")
-                    print(f"Expected: {list(def_yf[i]['user_settings'].keys())}, got {list(yf[i]['user_settings'].keys())}")
-                    os._exit(1)
 
-            except:
-                if yf[i]["app_settings"].keys() != def_yf[i]["app_settings"].keys():
-                    print(f"YAML file broken. Missing settings in app_settings.")
-                    print(f"Expected: {list(def_yf[i]['app_settings'].keys())}, got {list(yf[i]['app_settings'].keys())}")
-                    os._exit(1)
+        if set(yf[0]["user_settings"].keys()) != set(user.keys()):
+            print(f"YAML file broken. Missing settings in user_settings.")
+            print(f"Expected: {set(user.keys())}, got {set(yf[0]['user_settings'].keys())}")
+            os._exit(1)
+
+        if yf[1]["app_settings"].keys() != set(app.keys()):
+            print(f"YAML file broken. Missing settings in app_settings.")
+            print(f"Expected: {set(app.keys())}, got {set(yf[1]['app_settings'].keys())}")
+            os._exit(1)
 
         if skip_init:
             return yf

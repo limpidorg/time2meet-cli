@@ -4,7 +4,7 @@ user_settings:
   email: johndoe@example.com
   timeShift: 0.0
   planners: ["plannerId1", "plannerId2"]
-  require-email-verificaiton: false
+  require-email-verification: false
 ---
 r_settings:
   user:

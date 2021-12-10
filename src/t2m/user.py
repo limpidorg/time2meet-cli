@@ -1,6 +1,6 @@
 import os
 from getpass import getpass
-from .request_handler import request
+from .request_handler import request, set_dry
 from .yaml_validator import yaml_user, yaml_update, yaml_reset
 from .tokens import new_token
 from datetime import  datetime
@@ -29,6 +29,7 @@ def user_info(user_id = None):
 def verify_email():
     tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
 
+    set_dry(False)
     if len(tok) == 0:
         new_token()
         tok = getpass("Please enter your token: ")
