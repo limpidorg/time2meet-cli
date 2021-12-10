@@ -44,7 +44,7 @@ def new_token(email = None, pswrd = None):
     if pswrd is None:
         pswrd = getpass("Enter your password: ")
 
-    if token_req("post", {"password":  pswrd, "email": email}, {"maxAge": duration, "scopes": json.dumps({"scopes": scopes})}):
+    if token_req("post", {"password":  pswrd, "email": email}, {"maxAge": duration, "scopes": json.dumps(scopes)}):
         print("SAVE YOUR TOKEN SOMEWHERE, IT WILL NOT BE SAVED.")
 
 
