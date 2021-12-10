@@ -24,12 +24,14 @@ if validation == "set_user" or validation == "register":
         usr = user_info()
 
         for keys in list(yaml_user().keys()):
-            if keys not in ["userId","email","timeShift","userName","planner", "status"]:
-                continue
-            if keys == "require-email-verificaiton":
-                if usr["user"]["status"] == "require-email-verifcation":
+            if keys == "require-email-verification":
+                if usr["user"]["status"] == "require-email-verification":
                     yaml_update("require-email-verification", True)
                     continue
+
+            if keys not in list(usr["user"].keys()) and keys != "require-email-verification":
+                continue
+
             yaml_update(keys, usr["user"][keys]) 
 
         os._exit(1)

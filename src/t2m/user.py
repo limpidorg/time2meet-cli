@@ -24,7 +24,6 @@ def user_info():
 
 def verify_email():
     tok = getpass("Please enter your token: [Leave blank if you don't have one] ")
-    print(tok)
 
     set_dry(False)
     if len(tok) == 0:

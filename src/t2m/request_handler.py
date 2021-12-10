@@ -58,6 +58,8 @@ def request(protocol, path = None, param = None, data = None):
     if path == "token/login":
         login = True
         path = path.split("/")[0]
+    else:
+        login = False
 
     p, d = construct_json(protocol, path, param, data)
 
