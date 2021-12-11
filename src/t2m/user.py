@@ -111,9 +111,8 @@ def edit_profile():
             new_settings["properties"][keys] = change
 
     tok = getpass("Enter your token: ")
-    new_settings["properties"] = json.dumps(new_settings["properties"])
 
-    if user_req("patch", {"userId": yaml_user()["userId"], "token": tok}, new_settings):
+    if user_req("patch", {"userId": yaml_user()["userId"], "token": tok}, json.dumps(new_settings["properties"])):
         for keys in list(new_settings["properties"].keys()):
             yaml_update(keys, new_settings["properties"][keys])
 
