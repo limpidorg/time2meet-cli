@@ -3,7 +3,7 @@ from getpass import getpass
 from .request_handler import request, set_dry
 from .yaml_validator import yaml_user, yaml_update, yaml_reset
 from .tokens import new_token
-from datetime import  datetime
+from datetime import  datetime, timedelta
 import json
 
 
@@ -104,7 +104,7 @@ def edit_profile():
 
         else:
             if keys == "timeShift":
-                change = datetime.timedelta(hours = float(input("Enter the difference from UTC in hours: "))).seconds
+                change = timedelta(hours = float(input("Enter the difference from UTC in hours: "))).seconds
             else:
                 change = input(f"Enter the new value for {keys}: ")
 
@@ -112,7 +112,7 @@ def edit_profile():
 
     tok = getpass("Enter your token: ")
 
-    if user_req("patch", {"userId": yaml_user()["userId"], "token": tok}, json.dumps(new_settings["properties"])):
+    if user_req("patch", {"userId": yaml_user()["userId"], "token": tok, "properties": json.dumps(new_settings["properties"])}):
         for keys in list(new_settings["properties"].keys()):
             yaml_update(keys, new_settings["properties"][keys])
 
