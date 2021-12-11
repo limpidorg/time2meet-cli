@@ -88,12 +88,18 @@ def request(protocol, path = None, param = None, data = None):
             if path == "token" and login:
                 return response["userId"], response["token"]
 
+            if path == "email-verification" and protocol == "get":
+                return False
+
             return True
 
         else:
             print(f"\033[31mSomething went wrong.")
             print(f"Error code: {response['code']}")
             print(f"{response['message']}\033[0m")
+
+            if path == "email-verification" and protocol == "get" and response["code"] == -106:
+                return True
 
             return False
 

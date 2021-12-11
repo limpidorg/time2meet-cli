@@ -15,7 +15,7 @@ def user_permissions_req(protocol, param = None, data = None):
 #Create a new token
 #
 def update_permission():
-    target = input("Enter the id of the person you want to change the permissions of: [Leave blank if you want to change your permissions] ")
+    target = input("Enter the userId of the person you want to change the permissions of: [Leave blank if you want to change your own permissions] ")
     planner_id = input("Enter the plannerId: ")
     perms = input("Enter new permissions: [Leave blank if you want to remove the user]").split()
     tok = getpass("Enter your token: ")

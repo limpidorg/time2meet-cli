@@ -44,14 +44,19 @@ def verify_email():
         new_token()
         tok = getpass("Please enter your token: ")
 
-    request("get", "email-verification", {"userId": yaml_user()["userId"], "token": tok})
-    resp = request("post", "email-verification",
+    ver = request("get", "email-verification", {"userId": yaml_user()["userId"], "token": tok})
+    if not ver:
+        resp = request("post", "email-verification",
             param = {"userId": yaml_user()["userId"],
             "otp": input("Enter your verificiation code sent to your email: "),
             "token": tok})
 
-    if resp:
-        yaml_update("require-email-verification", True)
+        if resp:
+            yaml_update("require-email-verification", False)
+
+    else:
+        yaml_update("require-email-verification", False)
+
 
 #Register a new account and set the account for this computer
 #
@@ -78,7 +83,6 @@ def register():
 
         user_id = input("Enter your userId: ")
         yaml_update("userId", user_id, False)
-        new_token(email, pswrd)
 
         if verify_email():
             yaml_update("require-email-verificaiton", True, False)
